@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YTSubViewer — 产品介绍</title>
+  <style>
+    :root {
+      --bg: #faf7f2;
+      --bg-alt: #f0ebe3;
+      --bg-card: #ffffff;
+      --text: #2c2420;
+      --text-muted: #7a6e63;
+      --accent: #c46b4a;
+      --accent-light: #e8a889;
+      --accent-bg: #fdf0e8;
+      --border: #e5ddd3;
+      --shadow: 0 2px 12px rgba(44, 36, 32, 0.06);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+      --font-sans: "Noto Sans SC", "Source Han Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(250, 247, 242, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 2rem;
+    }
+    nav .logo {
+      font-family: var(--font-serif);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    nav .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+    }
+    nav a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--accent); }
+
+    /* ── Hero ── */
+    .hero {
+      margin-top: 56px;
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+      background: linear-gradient(180deg, var(--accent-bg) 0%, var(--bg) 100%);
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero .tagline {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat .num {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+    .hero-stat .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Section layout ── */
+    section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+    }
+    section + section {
+      border-top: 1px solid var(--border);
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-header .eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    .section-header p {
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── Cards ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(44, 36, 32, 0.1);
+    }
+    .card .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+    .card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── Pipeline / Flow ── */
+    .pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .pipeline::before {
+      content: "";
+      position: absolute;
+      left: 28px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent-light), var(--accent), var(--accent-light));
+      border-radius: 2px;
+    }
+    .pipe-step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.5rem 0;
+      position: relative;
+    }
+    .pipe-dot {
+      width: 56px;
+      height: 56px;
+      min-width: 56px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      z-index: 1;
+      box-shadow: 0 2px 8px rgba(196, 107, 74, 0.15);
+    }
+    .pipe-content h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .pipe-content p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .pipe-content .tech {
+      display: inline-block;
+      margin-top: 0.4rem;
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      background: var(--bg-alt);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    /* ── Architecture diagram ── */
+    .arch-diagram {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+    .arch-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      min-width: 500px;
+    }
+    .arch-layer {
+      border-radius: var(--radius-sm);
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .arch-layer .layer-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      min-width: 72px;
+      text-align: right;
+      color: var(--text-muted);
+    }
+    .arch-layer .layer-items {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .arch-layer .layer-items span {
+      font-size: 0.82rem;
+      font-family: var(--mono);
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .arch-layer.frontend { background: #f0f7ed; border: 1px solid #c5ddb8; }
+    .arch-layer.api { background: #edf2f7; border: 1px solid #b8c5d8; }
+    .arch-layer.pipeline { background: var(--accent-bg); border: 1px solid var(--accent-light); }
+    .arch-layer.services { background: #f7f0ed; border: 1px solid #d8c5b8; }
+    .arch-layer.external { background: var(--bg-alt); border: 1px solid var(--border); }
+    .arch-arrow {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.2rem 0;
+    }
+
+    /* ── Timeline (dev process) ── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 2.5rem;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -2rem;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .timeline-item .time-label {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-item h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-item p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .timeline-item ul {
+      margin-top: 0.5rem;
+      padding-left: 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .timeline-item ul li { margin-bottom: 0.25rem; }
+
+    /* ── Tech stack table ── */
+    .tech-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .tech-table th {
+      text-align: left;
+      padding: 0.8rem 1rem;
+      background: var(--bg-alt);
+      border-bottom: 2px solid var(--border);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .tech-table td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .tech-table tr:hover td { background: var(--accent-bg); }
+    .tech-table .mono {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+    }
+
+    /* ── Score bar ── */
+    .score-grid {
+      display: grid;
+      grid-template-columns: 160px 1fr 48px;
+      gap: 0.6rem 1rem;
+      align-items: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .score-label {
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-align: right;
+    }
+    .score-bar {
+      height: 10px;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .score-bar .fill {
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s ease;
+    }
+    .score-bar .fill.high { background: #5a9a6a; }
+    .score-bar .fill.mid { background: #c4a24a; }
+    .score-bar .fill.low { background: var(--accent); }
+    .score-val {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    /* ── Code block ── */
+    .code-block {
+      background: #1e1a17;
+      color: #e8ddd0;
+      border-radius: var(--radius-sm);
+      padding: 1.2rem 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    .code-block .comment { color: #7a6e63; }
+    .code-block .keyword { color: #e8a889; }
+    .code-block .string { color: #8ab87a; }
+
+    /* ── Callout ── */
+    .callout {
+      background: var(--accent-bg);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    .callout strong { color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 1rem; gap: 1rem; }
+      .hero { padding: 4rem 1.5rem 3rem; }
+      .hero-stats { gap: 1.5rem; }
+      section { padding: 3rem 1.5rem; }
+      .card-grid { grid-template-columns: 1fr; }
+      .arch-diagram { padding: 1.2rem; }
+      .score-grid { grid-template-columns: 120px 1fr 36px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════ Navigation ════════════════════════════════════════════════ -->
+<nav>
+  <div class="logo">YTSubViewer</div>
+  <div class="nav-links">
+    <a href="#features">功能介绍</a>
+    <a href="#pipeline">工作原理</a>
+    <a href="#architecture">系统架构</a>
+    <a href="#tech-stack">技术栈</a>
+    <a href="#dev-process">开发过程</a>
+    <a href="#product-score">产品评分</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════ Hero ════════════════════════════════════════════════ -->
+<header class="hero">
+  <h1>YT<span>Sub</span>Viewer</h1>
+  <p class="tagline">面向 30-120 分钟英文演讲/访谈视频的本地优先字幕翻译工作台，从 YouTube 链接一键生成双语字幕与硬字幕视频。</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="num">7</span>
+      <span class="label">核心模块</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">120+</span>
+      <span class="label">i18n 翻译键</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">3</span>
+      <span class="label">性能模式</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">EN → CN/JA/KR</span>
+      <span class="label">多语言翻译</span>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════ Features ════════════════════════════════════════════════ -->
+<section id="features">
+  <div class="section-header">
+    <p class="eyebrow">Features</p>
+    <h2>功能介绍</h2>
+    <p>核心能力一览：从输入链接到交付成品，全流程自动化。</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <h3>智能字幕获取</h3>
+      <p>三级回退策略：优先人工英文字幕 → YouTube 自动字幕 → Whisper 本地转写。自动选择最优字幕源。</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+      </div>
+      <h3>DeepSeek 翻译</h3>
+      <p>批量并行翻译，支持术语表、保护词、风格预设。自动检测残留英文并重译低质量句。</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+      </div>
+      <h3>多格式导出</h3>
+      <p>输出中文 SRT、中文 ASS、双语 ASS，以及硬字幕 MP4。支持预览版快速导出。</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+      </div>
+      <h3>后台任务队列</h3>
+      <p>支持批量入队、3 并发任务、取消/重试。任务状态持久化，刷新页面或重启应用后自动恢复。</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+      </div>
+      <h3>字幕编辑器</h3>
+      <p>逐句编辑、单句重译、锁定、批量术语替换。支持问题句筛选和搜索过滤。</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </div>
+      <h3>质量报告</h3>
+      <p>自动检测空字幕、残留英文、长行、时间重叠、术语一致性，生成 Markdown 格式的质量报告。</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3>创作者配置</h3>
+      <p>按频道/创作者记忆术语表、风格预设和保护词，后续处理同一创作者的视频时自动继承。</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m2 12 10 10 10-10"/><path d="m2 12 10-10 10 10"/></svg>
+      </div>
+      <h3>多语言界面</h3>
+      <p>中英文双语界面切换，支持中文、日语、韩语作为翻译目标语言。语言偏好持久化。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ Pipeline ════════════════════════════════════════════════ -->
+<section id="pipeline">
+  <div class="section-header">
+    <p class="eyebrow">How It Works</p>
+    <h2>工作原理</h2>
+    <p>从 YouTube 链接到成品视频，经过 7 个自动化阶段。</p>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="pipe-dot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <div class="pipe-content">
+        <h3>1. 视频分析</h3>
+        <p>通过 yt-dlp 提取视频元数据：标题、时长、缩略图、可用字幕轨道。自动判断最优字幕来源策略。</p>
+        <span class="tech">YouTubeService.extract_metadata()</span>
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="pipe-dot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </div>
+      <div class="pipe-content">
+        <h3>2. 视频下载</h3>
+        <p>下载最高 1080p MP4 格式视频到本地工作目录。支持断点续传和已有文件复用。</p>
+        <span class="tech">YouTubeService.download_video()</span>
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="pipe-dot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+      </div>
+      <div class="pipe-content">
+        <h3>3. 字幕获取</h3>
+        <p>按优先级获取英文字幕：人工上传字幕 > YouTube 自动字幕 > Whisper 本地转写。Whisper 首次使用需下载模型。</p>
+        <span class="tech">YouTubeService / TranscriptionService</span>
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="pipe-dot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+      </div>
+      <div class="pipe-content">
+        <h3>4. 分段翻译</h3>
+        <p>英文字幕按批次发送到 DeepSeek API 翻译。3 并行 worker，每批 20 条，自动重试与质量自检。</p>
+        <span class="tech">DeepSeekTranslator.translate_cues_stream()</span>
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="pipe-dot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </div>
+      <div class="pipe-content">
+        <h3>5. 后处理与质检</h3>
+        <p>优化中文断句（按行宽限制），检测残留英文自动重译，生成质量报告（Markdown）。</p>
+        <span class="tech">polish_translated_cues() + QualityReport</span>
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="pipe-dot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+      </div>
+      <div class="pipe-content">
+        <h3>6. 字幕生成</h3>
+        <p>输出中文 SRT、中文 ASS、双语 ASS 三种格式。ASS 使用微软雅黑字体，支持自定义样式。</p>
+        <span class="tech">write_srt() + write_ass()</span>
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="pipe-dot">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+      </div>
+      <div class="pipe-content">
+        <h3>7. 视频导出</h3>
+        <p>使用 ffmpeg 将 ASS 字幕烧录进视频，生成硬字幕 MP4。支持预览版（快速低质量）和正式版。</p>
+        <span class="tech">VideoExportService.burn_video_events()</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ Architecture ════════════════════════════════════════════════ -->
+<section id="architecture">
+  <div class="section-header">
+    <p class="eyebrow">Architecture</p>
+    <h2>系统架构</h2>
+    <p>分层架构设计，前端 → API → Pipeline → Service 层层解耦。</p>
+  </div>
+
+  <div class="arch-diagram">
+    <div class="arch-layers">
+      <div class="arch-layer frontend">
+        <span class="layer-label">前端层</span>
+        <div class="layer-items">
+          <span>index.html</span>
+          <span>app.js</span>
+          <span>i18n.js</span>
+          <span>styles.css</span>
+          <span>Gradio Legacy UI</span>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ HTTP / WebSocket</div>
+
+      <div class="arch-layer api">
+        <span class="layer-label">API 层</span>
+        <div class="layer-items">
+          <span>webapp.py (FastAPI)</span>
+          <span>auth.py</span>
+          <span>rate_limit.py</span>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ 调用</div>
+
+      <div class="arch-layer pipeline">
+        <span class="layer-label">编排层</span>
+        <div class="layer-items">
+          <span>pipeline.py</span>
+          <span>background_jobs.py</span>
+          <span>job_state.py</span>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ 委托</div>
+
+      <div class="arch-layer services">
+        <span class="layer-label">服务层</span>
+        <div class="layer-items">
+          <span>youtube.py</span>
+          <span>transcribe.py</span>
+          <span>translate.py</span>
+          <span>export.py</span>
+          <span>player.py</span>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓ 调用</div>
+
+      <div class="arch-layer external">
+        <span class="layer-label">外部依赖</span>
+        <div class="layer-items">
+          <span>yt-dlp</span>
+          <span>ffmpeg</span>
+          <span>mpv</span>
+          <span>faster-whisper</span>
+          <span>DeepSeek API</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 2rem;">
+    <strong>关键设计决策：</strong> Pipeline 层（pipeline.py）是整个系统的核心编排器，负责串联各服务层模块，管理翻译进度的持久化与断点恢复。后台任务管理器（background_jobs.py）基于 threading 实现单机并发队列，任务状态以 JSON 文件持久化。
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ Tech Stack ════════════════════════════════════════════════ -->
+<section id="tech-stack">
+  <div class="section-header">
+    <p class="eyebrow">Tech Stack</p>
+    <h2>技术栈</h2>
+    <p>前后端技术选型与各模块职责。</p>
+  </div>
+
+  <div class="arch-diagram" style="padding: 0; overflow: hidden;">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>层级</th>
+          <th>技术</th>
+          <th>职责</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>后端框架</td>
+          <td class="mono">FastAPI + Uvicorn</td>
+          <td>HTTP API 服务，Session 认证，CORS，速率限制</td>
+        </tr>
+        <tr>
+          <td>前端</td>
+          <td class="mono">Vanilla JS + CSS</td>
+          <td>纯手写前端，无构建流程，i18n 语言包</td>
+        </tr>
+        <tr>
+          <td>视频下载</td>
+          <td class="mono">yt-dlp</td>
+          <td>YouTube 视频/字幕/元数据提取</td>
+        </tr>
+        <tr>
+          <td>语音转写</td>
+          <td class="mono">faster-whisper</td>
+          <td>本地 Whisper 模型，支持 CUDA/CPU 自动回退</td>
+        </tr>
+        <tr>
+          <td>翻译引擎</td>
+          <td class="mono">DeepSeek API</td>
+          <td>OpenAI 兼容接口，批量并行翻译，术语表注入</td>
+        </tr>
+        <tr>
+          <td>音视频处理</td>
+          <td class="mono">ffmpeg</td>
+          <td>音频抽取、字幕烧录、视频导出</td>
+        </tr>
+        <tr>
+          <td>本地播放</td>
+          <td class="mono">mpv</td>
+          <td>带字幕的本地视频预览播放</td>
+        </tr>
+        <tr>
+          <td>配置管理</td>
+          <td class="mono">dotenv + JSON</td>
+          <td>环境变量、用户设置、API Key 加密存储</td>
+        </tr>
+        <tr>
+          <td>任务系统</td>
+          <td class="mono">threading + JSON</td>
+          <td>并发后台任务、状态持久化、崩溃恢复</td>
+        </tr>
+        <tr>
+          <td>打包分发</td>
+          <td class="mono">PyInstaller</td>
+          <td>Windows 便携版/安装器，Docker 容器化</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ Dev Process ════════════════════════════════════════════════ -->
+<section id="dev-process">
+  <div class="section-header">
+    <p class="eyebrow">Development</p>
+    <h2>开发过程</h2>
+    <p>从需求分析到产品迭代的完整开发历程。</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <p class="time-label">Sprint 1 — 核心链路</p>
+      <h3>MVP：跑通 YouTube → 翻译 → 字幕 全流程</h3>
+      <p>搭建 FastAPI 后端 + Gradio 前端原型，接入 yt-dlp 下载、DeepSeek 翻译、SRT 导出。</p>
+      <ul>
+        <li>初始化 Python 项目结构，配置虚拟环境</li>
+        <li>实现 YouTubeService（yt-dlp 封装）</li>
+        <li>实现 TranscriptionService（faster-whisper 本地转写）</li>
+        <li>实现 DeepSeekTranslator（批量翻译 + 术语表）</li>
+        <li>实现 SubtitlePipeline 编排全链路</li>
+        <li>导出中文/双语 SRT 字幕文件</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <p class="time-label">Sprint 2 — 任务系统与编辑器</p>
+      <h3>后台任务队列、字幕编辑器、质量报告</h3>
+      <p>引入 BackgroundGenerationManager 实现后台并发，添加字幕逐句编辑和质量检测。</p>
+      <ul>
+        <li>实现 BackgroundGenerationManager（threading 并发队列）</li>
+        <li>任务状态 JSON 持久化，支持崩溃恢复</li>
+        <li>字幕编辑器：逐句编辑、重译、锁定、批量替换</li>
+        <li>质量报告系统：空字幕、残留英文、长行检测</li>
+        <li>ASS 字幕格式支持（中文 + 双语模式）</li>
+        <li>硬字幕视频导出（ffmpeg 字幕烧录）</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <p class="time-label">Sprint 3 — 现代 Web UI</p>
+      <h3>从 Gradio 迁移到自研前端，创作者配置</h3>
+      <p>构建 Vanilla JS 现代 Web UI，替代 Gradio 作为主界面。添加频道级配置记忆。</p>
+      <ul>
+        <li>设计并实现 index.html + app.js + styles.css</li>
+        <li>卡片式布局，响应式设计，实时进度反馈</li>
+        <li>实现 CreatorProfileStore（按频道记忆配置）</li>
+        <li>三种性能模式（fast / balanced / quality）</li>
+        <li>批量链接入队、预览版导出</li>
+        <li>License 激活系统</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <p class="time-label">Sprint 4 — 产品加固</p>
+      <h3>安全性、性能、可部署性、国际化全面升级</h3>
+      <p>针对上线网站定位，对安全性、性能、跨平台、i18n 四个维度进行系统性升级。</p>
+      <ul>
+        <li><strong>安全</strong>：API Token 认证、API Key 加密存储、CORS、速率限制、URL 校验</li>
+        <li><strong>性能</strong>：3 并发任务、翻译重试上限、ffmpeg/Whisper 超时、磁盘检查</li>
+        <li><strong>部署</strong>：跨平台兼容、Dockerfile、docker-compose、GitHub Actions CI/CD</li>
+        <li><strong>国际化</strong>：中英文双语界面、i18n 框架、多目标语言翻译（CN/JA/KR）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ Product Score ════════════════════════════════════════════════ -->
+<section id="product-score">
+  <div class="section-header">
+    <p class="eyebrow">Product Score</p>
+    <h2>产品评分</h2>
+    <p>多维度产品评估（满分 10 分），升级前后对比。</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+    <div>
+      <h3 style="font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem; color: var(--text-muted);">升级前</h3>
+      <div class="score-grid">
+        <span class="score-label">UI/UX 设计</span>
+        <div class="score-bar"><div class="fill mid" style="width: 60%"></div></div>
+        <span class="score-val">6</span>
+
+        <span class="score-label">功能完整性</span>
+        <div class="score-bar"><div class="fill high" style="width: 80%"></div></div>
+        <span class="score-val">8</span>
+
+        <span class="score-label">性能与稳定性</span>
+        <div class="score-bar"><div class="fill low" style="width: 50%"></div></div>
+        <span class="score-val">5</span>
+
+        <span class="score-label">安全性</span>
+        <div class="score-bar"><div class="fill low" style="width: 30%"></div></div>
+        <span class="score-val">3</span>
+
+        <span class="score-label">可部署性</span>
+        <div class="score-bar"><div class="fill low" style="width: 40%"></div></div>
+        <span class="score-val">4</span>
+
+        <span class="score-label">国际化</span>
+        <div class="score-bar"><div class="fill low" style="width: 40%"></div></div>
+        <span class="score-val">4</span>
+
+        <span class="score-label">代码质量</span>
+        <div class="score-bar"><div class="fill high" style="width: 70%"></div></div>
+        <span class="score-val">7</span>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem; color: var(--accent);">升级后（目标）</h3>
+      <div class="score-grid">
+        <span class="score-label">UI/UX 设计</span>
+        <div class="score-bar"><div class="fill mid" style="width: 60%"></div></div>
+        <span class="score-val">6</span>
+
+        <span class="score-label">功能完整性</span>
+        <div class="score-bar"><div class="fill high" style="width: 80%"></div></div>
+        <span class="score-val">8</span>
+
+        <span class="score-label">性能与稳定性</span>
+        <div class="score-bar"><div class="fill high" style="width: 80%"></div></div>
+        <span class="score-val">8</span>
+
+        <span class="score-label">安全性</span>
+        <div class="score-bar"><div class="fill high" style="width: 70%"></div></div>
+        <span class="score-val">7</span>
+
+        <span class="score-label">可部署性</span>
+        <div class="score-bar"><div class="fill high" style="width: 70%"></div></div>
+        <span class="score-val">7</span>
+
+        <span class="score-label">国际化</span>
+        <div class="score-bar"><div class="fill high" style="width: 70%"></div></div>
+        <span class="score-val">7</span>
+
+        <span class="score-label">代码质量</span>
+        <div class="score-bar"><div class="fill high" style="width: 70%"></div></div>
+        <span class="score-val">7</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top: 2rem;">
+    <strong>综合评分：</strong>5.3 → 7.1（+34%）。安全性从 3 分提升到 7 分是最大改善，可部署性从 4 分到 7 分使产品具备上线为网站的能力。
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ Quick Start ════════════════════════════════════════════════ -->
+<section id="quick-start">
+  <div class="section-header">
+    <p class="eyebrow">Quick Start</p>
+    <h2>快速开始</h2>
+    <p>三步启动本地开发环境。</p>
+  </div>
+
+  <div class="code-block">
+<span class="comment"># 1. 激活虚拟环境并安装依赖</span>
+<span class="keyword">.venv\Scripts\activate</span>
+pip install -r requirements.txt
+
+<span class="comment"># 2. 配置环境变量</span>
+cp .env.example .env
+<span class="comment"># 编辑 .env，填入 DEEPSEEK_API_KEY</span>
+
+<span class="comment"># 3. 启动应用</span>
+python app.py
+<span class="comment"># 自动打开浏览器 → http://127.0.0.1:{port}</span>
+  </div>
+
+  <div style="margin-top: 1.5rem;">
+    <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+      <div class="card" style="text-align: center;">
+        <h3>Docker 部署</h3>
+        <div class="code-block" style="text-align: left; font-size: 0.78rem;">
+docker compose up -d
+        </div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <h3>便携版构建</h3>
+        <div class="code-block" style="text-align: left; font-size: 0.78rem;">
+powershell -File build_portable.ps1
+        </div>
+      </div>
+      <div class="card" style="text-align: center;">
+        <h3>健康检查</h3>
+        <div class="code-block" style="text-align: left; font-size: 0.78rem;">
+curl http://localhost:8000/api/health
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════ Footer ════════════════════════════════════════════════ -->
+<footer>
+  <p>YTSubViewer &mdash; 本地优先的 YouTube 长视频字幕翻译工作台</p>
+  <p style="margin-top: 0.5rem;">Python + FastAPI + yt-dlp + faster-whisper + DeepSeek</p>
+</footer>
+
+</body>
+</html>

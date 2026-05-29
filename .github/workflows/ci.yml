@@ -1,0 +1,51 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt
+      - run: pip install pytest pytest-cov
+      - run: pytest tests/ -v --cov=src/ytsubviewer --cov-report=term-missing
+
+  build-windows:
+    needs: test
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt -r requirements-build.txt
+      - run: python -m PyInstaller --noconfirm --clean YTSubViewer.spec
+      - uses: actions/upload-artifact@v4
+        with:
+          name: YTSubViewer-windows
+          path: dist/YTSubViewer/
+
+  build-docker:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t ytsubviewer .
+      - run: docker save ytsubviewer | gzip > ytsubviewer-docker.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: YTSubViewer-docker
+          path: ytsubviewer-docker.tar.gz

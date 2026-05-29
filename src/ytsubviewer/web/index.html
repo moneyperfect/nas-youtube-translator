@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YTSubViewer</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="workspace-frame">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" data-i18n="app.eyebrow">本地 YouTube 字幕工作台</p>
+          <h1 data-i18n="app.title">YTSubViewer</h1>
+          <p class="subhead" data-i18n="app.subtitle">面向长视频字幕本地化的本地工作台，支持后台任务、编辑、导出与交付。</p>
+        </div>
+        <div class="topbar-actions cluster">
+          <select id="language-select" class="input" style="min-width:100px">
+            <option value="zh">中文</option>
+            <option value="en">English</option>
+          </select>
+          <div class="pill" id="app-version">v-</div>
+          <a class="ghost-link" href="/legacy" target="_blank" rel="noreferrer" data-i18n="legacy.link">旧版高级工具</a>
+        </div>
+      </header>
+
+      <main class="layout">
+      <section class="panel main-panel">
+        <div class="panel-header">
+          <h2 data-i18n="panel.task_workbench">任务工作台</h2>
+          <p data-i18n="panel.task_workbench_desc">从链接分析、批量排队、后台生成，到播放、导出、编辑和质检，都在这里完成。</p>
+        </div>
+
+        <div class="section">
+          <label class="label" for="url-input" data-i18n="input.url">YouTube 链接 / 批量链接</label>
+          <textarea id="url-input" class="input textarea compact-textarea" data-i18n="input.url.placeholder" placeholder="每行一个 YouTube 链接"></textarea>
+          <div class="button-row">
+            <button id="analyze-button" class="button secondary" type="button" data-i18n="button.analyze">分析视频</button>
+            <button id="generate-button" class="button primary" type="button" data-i18n="button.generate">生成字幕</button>
+            <button id="queue-batch-button" class="button secondary" type="button" data-i18n="button.batch">批量入队</button>
+          </div>
+        </div>
+
+        <details class="section collapsible">
+          <summary data-i18n="panel.translation">翻译与项目控制</summary>
+          <div class="field-grid">
+            <div>
+              <label class="label" for="style-select" data-i18n="label.style">风格预设</label>
+              <select id="style-select" class="input"></select>
+            </div>
+            <div>
+              <label class="label" for="performance-select" data-i18n="label.performance">性能模式</label>
+              <select id="performance-select" class="input"></select>
+            </div>
+          </div>
+          <div id="style-description" class="note-card" data-i18n="style.default_desc">默认风格适合大多数长视频。</div>
+          <div class="button-row">
+            <label class="checkbox-row">
+              <input id="creator-defaults-toggle" type="checkbox" checked>
+              <span data-i18n="toggle.creator_defaults">自动继承频道/创作者配置</span>
+            </label>
+            <button id="save-profile-button" class="button secondary" type="button" data-i18n="button.save_profile">保存当前为频道默认</button>
+          </div>
+          <div class="field-grid tall">
+            <div>
+              <label class="label" for="glossary-input" data-i18n="label.glossary">术语表</label>
+              <textarea id="glossary-input" class="input textarea" data-i18n="placeholder.glossary" placeholder="Blackwell -> Blackwell 架构"></textarea>
+            </div>
+            <div>
+              <label class="label" for="protected-terms-input" data-i18n="label.protected_terms">保留词</label>
+              <textarea id="protected-terms-input" class="input textarea" data-i18n="placeholder.terms" placeholder="CUDA, Omniverse, Blackwell"></textarea>
+            </div>
+          </div>
+          <p id="profile-status" class="hint-text" data-i18n="profile.local_hint">频道/创作者记忆会保存在本地。</p>
+        </details>
+
+        <div class="section">
+          <div class="video-card">
+            <div class="video-copy">
+              <p class="video-kicker" data-i18n="video.overview">视频概览</p>
+              <h3 id="video-title" data-i18n="video.no_analysis">还没有分析视频</h3>
+              <ul class="meta-list">
+                <li id="video-duration" data-i18n="video.duration">时长：-</li>
+                <li id="video-strategy" data-i18n="video.strategy">字幕来源：-</li>
+                <li id="video-channel" data-i18n="video.channel">频道：-</li>
+              </ul>
+            </div>
+            <div class="thumbnail-wrap">
+              <img id="video-thumbnail" class="thumbnail" alt="视频封面">
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="status-head">
+            <div>
+              <p class="video-kicker" data-i18n="job.current">当前任务</p>
+              <h3 id="job-status-title" data-i18n="status.ready">准备就绪</h3>
+            </div>
+            <div id="job-percent" class="percent-pill">0%</div>
+          </div>
+          <div class="progress-track">
+            <div id="job-progress-bar" class="progress-bar"></div>
+          </div>
+          <div class="meta-inline">
+            <span id="job-stage" data-i18n="job.stage">阶段：-</span>
+            <span id="job-eta" data-i18n="job.eta">预计剩余：-</span>
+          </div>
+          <div class="button-row">
+            <button id="cancel-job-button" class="button secondary" type="button" disabled data-i18n="button.cancel">取消任务</button>
+            <button id="retry-job-button" class="button secondary" type="button" disabled data-i18n="button.retry">重试任务</button>
+            <button id="refresh-job-button" class="button secondary" type="button" data-i18n="button.refresh">刷新任务视图</button>
+          </div>
+          <div id="job-hint" class="hint-text" data-i18n="job.hint_idle">页面刷新后会自动恢复后台任务。</div>
+          <div id="job-logs" class="log-list"></div>
+        </div>
+
+        <div class="section">
+          <div class="status-head">
+            <div>
+              <p class="video-kicker" data-i18n="panel.playback">播放与导出</p>
+              <h3 data-i18n="panel.delivery">本地交付结果</h3>
+            </div>
+          </div>
+          <div class="button-row">
+            <label class="checkbox-row">
+              <input id="bilingual-toggle" type="checkbox">
+              <span data-i18n="toggle.bilingual">播放器使用双语字幕</span>
+            </label>
+            <button id="open-player-button" class="button secondary" type="button" disabled data-i18n="button.open_player">打开本地播放器</button>
+            <button id="export-chinese-button" class="button secondary" type="button" disabled data-i18n="button.export_chinese">导出中文字幕 MP4</button>
+            <button id="export-bilingual-button" class="button secondary" type="button" disabled data-i18n="button.export_bilingual">导出双语 MP4</button>
+            <button id="preview-chinese-button" class="button secondary" type="button" disabled data-i18n="button.preview_chinese">生成中文字幕预览版</button>
+            <button id="preview-bilingual-button" class="button secondary" type="button" disabled data-i18n="button.preview_bilingual">生成双语预览版</button>
+          </div>
+          <p id="player-message" class="hint-text" data-i18n="player.hint">播放器和导出结果会显示在这里。</p>
+          <div id="downloads" class="downloads-grid"></div>
+        </div>
+
+        <details class="section collapsible">
+          <summary data-i18n="panel.editor">字幕编辑器与质检</summary>
+          <div class="button-row">
+            <input id="editor-search-input" class="input slim-input" type="text" data-i18n="editor.search" placeholder="搜索英文或中文字幕">
+            <label class="checkbox-row">
+              <input id="editor-issues-only" type="checkbox">
+              <span data-i18n="toggle.issues_only">只看问题句</span>
+            </label>
+            <button id="load-editor-button" class="button secondary" type="button" disabled data-i18n="button.load_editor">加载字幕编辑器</button>
+          </div>
+          <div class="button-row">
+            <input id="bulk-source-input" class="input slim-input" type="text" data-i18n="placeholder.bulk_source" placeholder="批量替换：原词">
+            <input id="bulk-target-input" class="input slim-input" type="text" data-i18n="placeholder.bulk_target" placeholder="批量替换：新词">
+            <button id="bulk-replace-button" class="button secondary" type="button" disabled data-i18n="button.bulk_replace">批量替换</button>
+          </div>
+          <div id="quality-summary" class="note-card" data-i18n="quality.loading">加载任务后，这里会显示质量报告摘要。</div>
+          <div id="quality-issues" class="check-list"></div>
+          <div id="editor-list" class="editor-list"></div>
+        </details>
+      </section>
+
+      <aside class="panel side-panel">
+        <div class="panel-header">
+          <h2 data-i18n="panel.system">系统面板</h2>
+          <p data-i18n="panel.system_desc">显示环境、授权、更新与最近任务，避免页面刷新后丢失上下文。</p>
+        </div>
+
+        <div class="section">
+          <label class="label" for="api-key-input" data-i18n="label.api_key">DeepSeek API Key</label>
+          <input id="api-key-input" class="input" type="password" placeholder="sk-...">
+          <div class="button-row">
+            <button id="save-settings-button" class="button primary" type="button" data-i18n="button.save_settings">保存设置</button>
+            <button id="refresh-button" class="button secondary" type="button" data-i18n="button.refresh_status">刷新状态</button>
+          </div>
+          <p id="settings-status" class="hint-text" data-i18n="env.waiting">等待初始化。</p>
+        </div>
+
+        <details class="section collapsible">
+          <summary data-i18n="panel.env_license_update">环境、授权与更新</summary>
+          <ul class="meta-list compact">
+            <li id="data-root">数据目录：-</li>
+            <li id="config-path">配置文件：-</li>
+            <li id="environment-status">应用状态：-</li>
+          </ul>
+          <div id="environment-checks" class="check-list"></div>
+          <div class="divider"></div>
+          <div id="license-status" class="note-card">授权状态加载中。</div>
+          <div class="button-row">
+            <input id="license-input" class="input slim-input" type="text" data-i18n="placeholder.license" placeholder="输入 License key">
+            <button id="activate-license-button" class="button secondary" type="button" data-i18n="button.activate_license">激活授权</button>
+            <button id="deactivate-license-button" class="button secondary" type="button" data-i18n="button.deactivate_license">取消激活</button>
+          </div>
+          <div id="update-status" class="note-card">更新状态加载中。</div>
+        </details>
+
+        <div class="section">
+          <div class="status-head">
+            <div>
+              <p class="video-kicker" data-i18n="panel.history">最近任务</p>
+              <h3>历史与队列</h3>
+            </div>
+          </div>
+          <div id="history-list" class="history-list"></div>
+        </div>
+      </aside>
+      </main>
+    </div>
+  </div>
+
+  <script src="/static/i18n.js"></script>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

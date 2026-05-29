@@ -1,0 +1,12 @@
+gradio>=5.29,<6
+fastapi>=0.115,<1
+uvicorn>=0.35,<1
+openai>=1.68.0
+python-dotenv>=1.0.1
+python-multipart>=0.0.20
+faster-whisper>=1.1.1
+nvidia-cublas-cu12==12.4.5.8
+nvidia-cuda-runtime-cu12==12.4.127
+yt-dlp>=2026.2.4
+webvtt-py>=0.5.1
+cryptography>=42.0

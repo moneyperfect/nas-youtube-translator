@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environment
+.venv/
+pip-cache/
+.pip-cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment & secrets
+.env
+
+# Runtime data
+.cache/
+.tmp/
+logs/
+workspace/
+.runtime/
+
+# Tools & downloads (large binaries)
+.tools/
+.downloads/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Build artifacts
+build/
+dist/
+dist-ui/
+release/
+*.spec
+
+# PyInstaller output
+*.exe
+*.dll
