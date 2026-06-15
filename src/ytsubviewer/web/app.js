@@ -559,18 +559,28 @@ function renderTask(job) {
 }
 
 function renderHistory(jobs) {
-  const cards = (jobs || []).map((job) => `
-    <button class="history-item" type="button" data-task-id="${escapeHtml(job.job_id)}">
-      <div>
-        <strong>${escapeHtml(job.title || "(未命名任务)")}</strong>
-        <p>${escapeHtml(job.kind)} / ${escapeHtml(job.status)} / ${escapeHtml(job.duration_text || "-")}</p>
+  const cards = (jobs || []).map((job) => {
+    const statusClass = job.status || "pending";
+    const statusText = {
+      completed: "完成",
+      failed: "失败",
+      running: "进行中",
+      pending: "等待中",
+      cancelled: "已取消",
+    }[statusClass] || statusClass;
+    return `
+    <div class="history-item" data-task-id="${escapeHtml(job.job_id)}">
+      <div class="history-item-info">
+        <div class="history-item-title">${escapeHtml(job.title || "(未命名任务)")}</div>
+        <div class="history-item-meta">${escapeHtml(job.duration_text || "-")} · ${escapeHtml(job.kind === "export" ? "导出" : "翻译")}</div>
       </div>
-      <span>${escapeHtml(job.progress_percent)}%</span>
-    </button>
-  `);
+      <span class="history-item-status ${statusClass}">${statusText}</span>
+    </div>
+  `;
+  });
   elements.historyList.innerHTML = cards.length
     ? cards.join("")
-    : `<div class="empty-state">${t("history.empty")}</div>`;
+    : `<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:0.88rem;">暂无历史任务</div>`;
   refreshIcons();
 }
 

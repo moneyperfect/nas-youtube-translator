@@ -344,6 +344,105 @@ select.input {
 .checkbox-row input { width: 16px; height: 16px; accent-color: var(--color-primary); cursor: pointer; }
 
 /* ══════════════════════════════════════════════════
+   History items
+   ══════════════════════════════════════════════════ */
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.history-item:hover {
+  background: var(--border-color);
+}
+
+.history-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-item-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-item-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.history-item-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.history-item-status.completed { background: #DCFCE7; color: #166534; }
+.history-item-status.failed { background: #FEE2E2; color: #991B1B; }
+.history-item-status.running { background: #DBEAFE; color: #1E40AF; }
+.history-item-status.pending { background: var(--color-surface); color: var(--text-muted); }
+
+/* ══════════════════════════════════════════════════
+   Editor items
+   ══════════════════════════════════════════════════ */
+
+.editor-item {
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border-radius: var(--radius-button);
+  margin-bottom: 8px;
+}
+
+.editor-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.editor-item-id {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.editor-item-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.editor-item-source {
+  font-size: 0.85rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.editor-item-target {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+}
+
+.editor-item-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* ══════════════════════════════════════════════════
    Responsive
    ══════════════════════════════════════════════════ */
 

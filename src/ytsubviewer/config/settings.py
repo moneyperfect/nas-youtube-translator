@@ -20,7 +20,7 @@ load_dotenv(override=False)
 APP_NAME = "YTSubViewer"
 APP_VERSION = "1.0.0"
 USER_SETTINGS_FILENAME = "settings.json"
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 # ── Path resolution utilities ──

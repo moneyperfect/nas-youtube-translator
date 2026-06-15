@@ -185,10 +185,12 @@
       <section id="history" class="page-section">
         <div class="card">
           <div class="card-header">
-            <h3>任务历史</h3>
-            <span class="hint">最近的翻译任务</span>
+            <div>
+              <h3>任务历史</h3>
+              <p class="hint">点击查看详情</p>
+            </div>
           </div>
-          <div id="history-list"></div>
+          <div id="history-list" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
       </section>
 
@@ -249,26 +251,48 @@
 
       <!-- ── Page: Editor ── -->
       <section id="editor" class="page-section">
+        <!-- Search & Actions -->
         <div class="card">
           <div class="card-header">
             <h3>字幕编辑器</h3>
+            <button id="load-editor-button" class="btn btn-primary" type="button" disabled><i data-lucide="list"></i> 加载</button>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
             <input id="editor-search-input" class="input" type="text" placeholder="搜索字幕" style="flex:1;min-width:180px;">
             <label class="checkbox-row">
               <input id="editor-issues-only" type="checkbox">
-              <span>问题句</span>
+              <span>仅问题句</span>
             </label>
-            <button id="load-editor-button" class="btn btn-secondary" type="button" disabled><i data-lucide="list"></i> 加载</button>
           </div>
-          <div style="display:flex;gap:8px;margin-top:12px;">
-            <input id="bulk-source-input" class="input" type="text" placeholder="原词" style="flex:1;">
-            <input id="bulk-target-input" class="input" type="text" placeholder="新词" style="flex:1;">
+        </div>
+
+        <!-- Quality Report -->
+        <div class="card">
+          <div class="card-header">
+            <h3>质量报告</h3>
+          </div>
+          <div id="quality-summary" class="hint">加载任务后显示质量报告</div>
+          <div id="quality-issues"></div>
+        </div>
+
+        <!-- Bulk Replace -->
+        <div class="card">
+          <div class="card-header">
+            <h3>批量替换</h3>
             <button id="bulk-replace-button" class="btn btn-secondary" type="button" disabled>替换</button>
           </div>
-          <div id="quality-summary" class="hint" style="margin-top:12px;">加载任务后显示质量报告</div>
-          <div id="quality-issues" style="margin-top:8px;"></div>
-          <div id="editor-list" style="margin-top:12px;"></div>
+          <div style="display:flex;gap:8px;">
+            <input id="bulk-source-input" class="input" type="text" placeholder="原词" style="flex:1;">
+            <input id="bulk-target-input" class="input" type="text" placeholder="新词" style="flex:1;">
+          </div>
+        </div>
+
+        <!-- Editor List -->
+        <div class="card">
+          <div class="card-header">
+            <h3>字幕列表</h3>
+          </div>
+          <div id="editor-list"></div>
         </div>
       </section>
 
