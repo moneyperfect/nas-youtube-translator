@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YTSubViewer 开发记录 — NasBuild</title>
+<title>YTSubViewer — 我做了一个没人要但自己很爽的工具</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -15,66 +15,327 @@
     --accent: #C46849;
     --accent-light: #E8D5CC;
     --border: #E5E0D8;
+    --black: #1D1D1F;
     --white: #FFFFFF;
     --serif: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
     --sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: var(--sans); background: var(--bg); color: var(--text-primary); line-height: 1.7; -webkit-font-smoothing: antialiased; }
-  .container { max-width: 780px; margin: 0 auto; padding: 0 32px; }
 
-  nav { padding: 24px 0; border-bottom: 1px solid var(--border); }
-  nav .container { display: flex; justify-content: space-between; align-items: center; }
-  nav a { font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--text-primary); text-decoration: none; }
-  nav .back { font-family: var(--sans); font-size: 14px; color: var(--text-secondary); transition: color 0.2s; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  nav {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  nav a {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  nav .back {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
   nav .back:hover { color: var(--text-primary); }
 
-  .hero { padding: 100px 0 80px; text-align: center; }
-  .hero-tag { display: inline-block; font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 32px; }
-  .hero h1 { font-family: var(--serif); font-size: 48px; font-weight: 600; line-height: 1.2; margin-bottom: 24px; letter-spacing: -0.5px; }
-  .hero-sub { font-size: 18px; color: var(--text-secondary); max-width: 520px; margin: 0 auto; font-weight: 300; line-height: 1.8; }
+  .hero {
+    padding: 100px 0 80px;
+    text-align: center;
+  }
 
-  .divider { width: 48px; height: 1px; background: var(--border); margin: 0 auto; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
 
-  .stats { display: flex; justify-content: center; gap: 64px; padding: 64px 0; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    padding: 64px 0;
+  }
+
   .stat { text-align: center; }
-  .stat-number { font-family: var(--serif); font-size: 40px; font-weight: 600; line-height: 1; }
-  .stat-label { font-size: 13px; color: var(--text-tertiary); margin-top: 8px; letter-spacing: 0.5px; }
 
-  .section { padding: 80px 0; }
-  .section-label { font-size: 12px; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px; }
-  .section h2 { font-family: var(--serif); font-size: 32px; font-weight: 600; margin-bottom: 32px; line-height: 1.3; }
-  .section p { font-size: 16px; color: var(--text-secondary); max-width: 620px; margin-bottom: 16px; line-height: 1.8; }
-  .section strong { color: var(--text-primary); font-weight: 600; }
-  .section ul { list-style: none; margin: 16px 0; }
-  .section li { font-size: 15px; color: var(--text-secondary); line-height: 2; padding-left: 20px; position: relative; }
-  .section li::before { content: ''; position: absolute; left: 0; top: 12px; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1;
+  }
 
-  .tech-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-  .tech-item { font-size: 13px; color: var(--text-secondary); padding: 6px 16px; border: 1px solid var(--border); border-radius: 100px; }
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
 
-  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
-  .feature-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
-  .feature-card h3 { font-family: var(--serif); font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-  .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+  .section {
+    padding: 80px 0;
+  }
 
-  .quote-block { padding: 48px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; margin-top: 48px; text-align: center; }
-  .quote-block p { font-family: var(--serif); font-size: 24px; font-weight: 500; line-height: 1.6; max-width: 100%; }
+  .section-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
 
-  .cta { text-align: center; padding: 80px 0; }
-  .cta a { display: inline-flex; align-items: center; gap: 8px; padding: 16px 40px; background: var(--accent); color: var(--white); border-radius: 100px; text-decoration: none; font-size: 15px; font-weight: 500; transition: background 0.2s; }
-  .cta a:hover { background: #b55a3d; }
-  .cta p { font-size: 14px; color: var(--text-tertiary); margin-top: 16px; }
+  .section h2 {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 32px;
+    line-height: 1.3;
+  }
 
-  footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; }
-  footer p { font-size: 13px; color: var(--text-tertiary); }
-  footer a { color: var(--text-secondary); text-decoration: none; }
-  footer a:hover { color: var(--text-primary); }
+  .section p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 620px;
+    margin-bottom: 16px;
+    line-height: 1.8;
+  }
+
+  .section strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 36px;
+    margin-top: 48px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .timeline-item:last-child { margin-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -36px;
+    top: 8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+
+  .timeline-item:last-child .timeline-dot {
+    background: var(--accent);
+  }
+
+  .timeline-date {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .timeline-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .timeline-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .tech-item {
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+  }
+
+  .lesson {
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .lesson h3 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .lesson p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .quote-block {
+    padding: 48px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  .quote-block p {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.6;
+    max-width: 100%;
+  }
+
+  .cta {
+    text-align: center;
+    padding: 80px 0;
+  }
+
+  .cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 40px;
+    background: var(--accent);
+    color: var(--white);
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+
+  .cta a:hover {
+    background: #b55a3d;
+  }
+
+  .cta p {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    margin-top: 16px;
+  }
+
+  footer {
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    color: var(--text-primary);
+  }
 
   @media (max-width: 640px) {
     .hero h1 { font-size: 32px; }
     .stats { flex-direction: column; gap: 32px; }
-    .feature-grid { grid-template-columns: 1fr; }
     .stat-number { font-size: 32px; }
   }
 </style>
@@ -84,15 +345,15 @@
   <nav>
     <div class="container">
       <a href="https://nasbuild.dev">NasBuild</a>
-      <a href="https://nasbuild.dev/projects" class="back">← projects</a>
+      <a href="https://nasbuild.dev/projects" class="back">← 所有项目</a>
     </div>
   </nav>
 
   <section class="hero">
     <div class="container">
-      <span class="hero-tag">YTSubViewer</span>
-      <h1>YouTube 视频字幕<br>本地化工作台</h1>
-      <p class="hero-sub">输入链接，自动完成下载、转写、翻译、导出。支持多种翻译引擎，数据完全本地处理。</p>
+      <span class="hero-tag">Project Story</span>
+      <h1>我做了一个<br>没人要但自己很爽的工具</h1>
+      <p class="hero-sub">市面上不缺翻译工具，但没有一个能让我满意。于是我花了一个周末，自己写了一个。</p>
     </div>
   </section>
 
@@ -101,20 +362,20 @@
   <section class="stats">
     <div class="container" style="display:flex;justify-content:center;gap:64px;">
       <div class="stat">
-        <div class="stat-number">5</div>
-        <div class="stat-label">翻译引擎</div>
-      </div>
-      <div class="stat">
         <div class="stat-number">3</div>
-        <div class="stat-label">目标语言</div>
+        <div class="stat-label">个周末</div>
       </div>
       <div class="stat">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">本地处理</div>
+        <div class="stat-number">472</div>
+        <div class="stat-label">条字幕同时翻译</div>
       </div>
       <div class="stat">
-        <div class="stat-number">MIT</div>
-        <div class="stat-label">开源协议</div>
+        <div class="stat-number">0</div>
+        <div class="stat-label">行手写代码</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">调试循环</div>
       </div>
     </div>
   </section>
@@ -123,33 +384,39 @@
 
   <section class="section">
     <div class="container">
-      <p class="section-label">解决的问题</p>
-      <h2>为什么要做这个</h2>
-      <p>翻译 YouTube 长视频一直是个痛点。现有的工具要么需要付费订阅，要么翻译质量堪忧，要么需要把视频上传到第三方服务器。</p>
-      <p>我需要一个工具，能够<strong>在本地完成整个翻译流程</strong>，同时支持多种翻译引擎，让我可以根据需要选择最适合的。</p>
+      <p class="section-label">起因</p>
+      <h2>一个很私人的需求</h2>
+      <p>我每周都要看很多英文 YouTube 视频，主要是技术讲座和产品发布。字幕翻译是个刚需，但现有工具让我很不爽。</p>
+      <p>DeepL 翻译出来的字幕像是机翻味的散文，读起来很累。专门的视频翻译 SaaS 又太贵，而且数据要上传到别人服务器。</p>
+      <p>最让我受不了的是，<strong>每次翻译完都要手动调格式</strong>。SRT 文件的时间轴经常对不上，双语字幕挤在一起根本看不清。</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <p class="section-label">核心能力</p>
-      <h2>它能做什么</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h3>智能字幕获取</h3>
-          <p>自动检测 YouTube 人工字幕、自动生成字幕，没有时回退到本地 Whisper 转写。</p>
+      <p class="section-label">过程</p>
+      <h2>三个周末的折腾</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <p class="timeline-date">第一个周末</p>
+          <h3 class="timeline-title">把链路跑通</h3>
+          <p class="timeline-desc">用 yt-dlp 下载视频，faster-whisper 转写，DeepSeek 翻译，ffmpeg 烧字幕。很粗糙，但能跑。最头疼的是字幕时间轴对齐，调了整整一下午。</p>
         </div>
-        <div class="feature-card">
-          <h3>多引擎翻译</h3>
-          <p>DeepSeek、OpenAI、通义千问、Moonshot、Ollama 本地——按需选择。</p>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <p class="timeline-date">第二个周末</p>
+          <h3 class="timeline-title">从脚本变成工具</h3>
+          <p class="timeline-desc">加了 Web 界面，FastAPI 后端，任务队列。最意外的是"字幕编辑器"——本来没想做，但翻译完发现有几句话翻得不对，就顺手加了单句重译功能。</p>
         </div>
-        <div class="feature-card">
-          <h3>字幕编辑</h3>
-          <p>单句编辑、重译、锁定、批量替换。翻译完不满意？直接改。</p>
-        </div>
-        <div class="feature-card">
-          <h3>视频导出</h3>
-          <p>一键烧录中文字幕或双语字幕到视频，支持预览和完整导出。</p>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <p class="timeline-date">第三个周末</p>
+          <h3 class="timeline-title">强迫症式打磨</h3>
+          <p class="timeline-desc">代码重构了三遍，UI 重写了两遍。加了配置持久化、批量处理、质量报告。最后还写了 65 个单元测试——对一个"自己用的工具"来说有点过分了。</p>
         </div>
       </div>
     </div>
@@ -159,35 +426,51 @@
 
   <section class="section">
     <div class="container">
-      <p class="section-label">技术实现</p>
-      <h2>怎么做的</h2>
-      <p>后端 Python + FastAPI，前端原生 HTML/JS（不用框架）。视频处理用 yt-dlp 和 ffmpeg，语音转写用 faster-whisper。</p>
-      <p>整个架构设计为<strong>本地优先</strong>，所有数据处理都在用户机器上完成，不依赖第三方云服务。</p>
+      <p class="section-label">技术</p>
+      <h2>堆了哪些东西</h2>
+      <p>技术栈不复杂，但每个环节都踩了坑。比如 faster-whisper 在 Windows 上的 CUDA DLL 路径问题，我查了两天才搞定。</p>
       <div class="tech-list">
         <span class="tech-item">Python</span>
         <span class="tech-item">FastAPI</span>
         <span class="tech-item">yt-dlp</span>
         <span class="tech-item">faster-whisper</span>
         <span class="tech-item">ffmpeg</span>
-        <span class="tech-item">OpenAI API</span>
+        <span class="tech-item">DeepSeek API</span>
         <span class="tech-item">原生 JS</span>
-        <span class="tech-item">Docker</span>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
+      <p class="section-label">收获</p>
+      <h2>几个意外的发现</h2>
+
+      <div class="lesson">
+        <h3>1. 工具做好了，自己用起来真的很爽</h3>
+        <p>以前翻译一个 10 分钟的视频要半小时，现在粘贴链接等两分钟就完事了。这种"为自己的痛点做东西"的满足感，比给老板写代码强太多了。</p>
+      </div>
+
+      <div class="lesson">
+        <h3>2. AI 能写代码，但不能替你思考</h3>
+        <p>整个项目 90% 的代码是 AI 写的，但架构设计、功能取舍、体验细节都是我自己想的。AI 是执行者，不是决策者。</p>
+      </div>
+
+      <div class="lesson">
+        <h3>3. "够用"和"好用"之间差了一个周末</h3>
+        <p>第一个周末就能用了，但很粗糙。后面两个周末花在打磨体验上——加载动画、Toast 提示、配置持久化。这些"不重要"的东西，恰恰决定了你会不会继续用它。</p>
+      </div>
+
       <div class="quote-block">
-        <p>本地优先，数据不出本机。</p>
+        <p>最好的工具，是那种你做完之后<br>再也回不去手动操作的工具。</p>
       </div>
     </div>
   </section>
 
   <section class="cta">
     <div class="container">
-      <a href="https://github.com/moneyperfect/YTSubViewer">GitHub →</a>
-      <p>MIT 开源</p>
+      <a href="https://github.com/moneyperfect/YTSubViewer">去 GitHub 看看 →</a>
+      <p>开源 · MIT 协议 · 欢迎折腾</p>
     </div>
   </section>
 
