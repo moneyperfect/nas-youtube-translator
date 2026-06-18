@@ -1,8 +1,10 @@
-# YTSubViewer
+# NAS YouTube Translator
 
-> YouTube 长视频字幕本地化工具 — 下载、转写、翻译、导出，一站完成。
+> 本地优先的视频字幕翻译工作台 — 数据不出本机，翻译质量可控。
 
 **作者**: [NasBuild](https://nasbuild.dev) | **技术栈**: Python + FastAPI + 原生 JS
+
+**GitHub**: https://github.com/moneyperfect/nas-youtube-translator
 
 ## 功能特性
 
