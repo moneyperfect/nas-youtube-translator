@@ -41,3 +41,4 @@ release/
 # PyInstaller output
 *.exe
 *.dll
+*.zip
