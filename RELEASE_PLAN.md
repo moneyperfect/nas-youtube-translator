@@ -65,17 +65,17 @@
 ## 模块四：打包分发（15分钟）
 
 ### 4.1 创建压缩包
-- [ ] 将 `dist/YTSubViewer/` 压缩为 `nas-youtube-translator.zip`
-- [ ] 确认压缩包大小合理（< 600MB）
+- [x] 将 `dist/YTSubViewer/` 压缩为 `nas-youtube-translator.zip`
+- [x] 确认压缩包大小合理（490MB）
 
 ### 4.2 准备安装器（可选）
 - [ ] 运行 `.\build_installer.ps1`
 - [ ] 生成 `YTSubViewer-Setup.exe`
 
 ### 4.3 上传到 GitHub
-- [ ] 创建 GitHub Release
-- [ ] 上传压缩包作为 Release Asset
-- [ ] 编写 Release Notes
+- [x] 创建 GitHub Release
+- [x] 上传压缩包作为 Release Asset
+- [x] 编写 Release Notes
 
 ---
 
@@ -101,15 +101,15 @@
 ## 模块六：发布检查（10分钟）
 
 ### 6.1 最终检查清单
-- [ ] README 链接正确
-- [ ] Release 下载链接可用
-- [ ] 文档无错别字
-- [ ] 无敏感信息泄露
+- [x] README 链接正确
+- [x] Release 下载链接可用（302 重定向验证通过）
+- [x] 文档无错别字
+- [x] 无敏感信息泄露
 
 ### 6.2 发布确认
-- [ ] GitHub 仓库设为 Public
-- [ ] Release 发布成功
-- [ ] 下载测试通过
+- [x] GitHub 仓库设为 Public
+- [x] Release 发布成功
+- [x] 下载测试通过
 
 ---
 
