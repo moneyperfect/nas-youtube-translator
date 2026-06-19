@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,10 @@ class YouTubeService(BaseService):
         cookies_path = self._ensure_cookies()
         if cookies_path and cookies_path.exists():
             opts["cookiefile"] = str(cookies_path)
+        # 代理配置：从环境变量读取
+        proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
+        if proxy:
+            opts["proxy"] = proxy
         return opts
 
     def _ydl_extract_with_fallback(self, url: str, opts: dict[str, Any]) -> dict[str, Any]:
