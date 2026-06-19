@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
 
 
 @dataclass
@@ -19,7 +21,22 @@ class ModelProvider:
         if self.api_key:
             return self.api_key
         if self.api_key_env:
-            return os.getenv(self.api_key_env, "")
+            key = os.getenv(self.api_key_env, "")
+            if key:
+                return key
+        # 从配置文件读取 API Key
+        try:
+            from ytsubviewer.config import Settings, decrypt_value
+            settings = Settings.load()
+            config_path = settings.config_path
+            if config_path.exists():
+                with open(config_path, 'r') as f:
+                    config = json.load(f)
+                encrypted = config.get(f"api_key_{self.name}", "")
+                if encrypted:
+                    return decrypt_value(encrypted)
+        except Exception:
+            pass
         return ""
 
     def has_key(self) -> bool:
@@ -45,6 +62,12 @@ BUILTIN_PROVIDERS: list[ModelProvider] = [
         base_url="https://api.deepseek.com",
         models=["deepseek-chat", "deepseek-reasoner"],
         api_key_env="DEEPSEEK_API_KEY",
+    ),
+    ModelProvider(
+        name="deepseek-test",
+        label="DeepSeek Test (本地测试)",
+        base_url="https://api.deepseek.com/v1",
+        models=["deepseek-chat", "deepseek-reasoner"],
     ),
     ModelProvider(
         name="openai",
